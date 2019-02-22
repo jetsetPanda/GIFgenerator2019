@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jetset GIFengine</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One|Gloria+Hallelujah|Luckiest+Guy|Press+Start+2P" rel="stylesheet">
+<style>
+/* font-family: 'Luckiest Guy', cursive;
+font-family: 'Gloria Hallelujah', cursive;
+font-family: 'Fredoka One', cursive;
+font-family: 'Press Start 2P', cursive; */
+body { 
+  background-color: black;
+}
+.vgfont {
+    font-family: 'Press Start 2P', cursive;
+}
+.roundfont {
+    font-family: 'Fredoka One', cursive;
+}
+
+.input-group-text {
+    color: white;
+    background-color: black;
+    border: 1px solid #0c5460;
+
+}
+
+button#userSubmit:hover
+{
+/* taste teh rainbowz */
+background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22) );
+  background-image: gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22) );
+  color:black;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  /* font-family: 'Press Start 2P', cursive; */
+}
+.rainbow {
+    background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22) );
+  background-image: gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22) );
+  color:transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+  <div class="topPart sticky-top">
+    <div class="row px-3 py-2 bg-dark border-bottom border-info d-flex justify-content-between">
+
+                <form class="form-inline">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">#</span>
+                        </div>
+                        <input id="userTopic" type="text" class="form-control mr-sm-2 roundfont"  placeholder="feed me topics">
+                    </div>
+                    <button id="userSubmit" type="submit" class="btn btn-primary my-2 my-sm-0 roundfont">Create GIF Buttons!</button>
+                </form>
+
+                <span><h1 class="navbar-brand mb-0 text-right vgfont rainbow">GIFengine19</h1><br><h7 class="vgfont text-right">by:jetsetPanda</h7></span>
+            
+    </div>
+    <div class="row bg-dark px-3 py-2 mb-4 rounded-bottom">
+        <div id="buttonDisplay">
+        </div>
+    </div>
+  </div>
+    <div class="container bg-black" style="margin:0; padding: 0;">
+      <div id="gifDisplay" class="row mb-4"></div>
+      <div id="moarButton" class="row mb-4"></div>
+      <div id="gifDisplayMore" class="row mb-4"></div>
+      <div id="masButton" class="row mb-4"></div>
+      <div id="gifDisplayMas" class="row mb-4"></div>
+      <div id="endButton" class="row mb-4"></div>
+    </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script>
+
+
+$("#userSubmit").on("click", function(e) {
+    e.preventDefault();
+    var topic = $("#userTopic").val().trim();
+
+    var newButton = $("<button>").addClass("btn btn-outline-warning vgfont gifbutton mx-1");
+    newButton.attr("type","button");
+    newButton.attr("data-topic",topic);
+    newButton.text(topic);
+    console.log("newButton is: " + newButton);
+    $("#buttonDisplay").prepend(newButton);
+
+    $(".gifbutton").on("click", function() {
+      var giphyTarget = $(this).attr("data-topic");
+      var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=Y4qlZyj6iyGpwyb1dBVgeqPg87J8D8Zd&q=" +
+        giphyTarget + "&limit=30&lang=en";
+      console.log("queryURL: " + queryURL);
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+      .then(function(response) {
+          $("#gifDisplay").empty();
+          $("#moarButton").empty();
+          $("#gifDisplayMore").empty();
+          $("#masButton").empty();
+          $("#gifDisplayMas").empty();
+          $("#endButton").empty();
+
+
+          var results = response.data;
+          console.log("var results is: " + results);
+          
+
+          // GIF display round 1
+          for (var i = 0; i < 4; i++) {
+            var topDiv = $("<div>").addClass("col-md-3");
+            var gifDiv = $("<div>").addClass("thumbnail");
+
+            var caption = $("<div>").addClass("caption text-white roundfont");
+            var rating = results[i].rating.toUpperCase();
+            var ratingText = $("<p>").text("Rating: " + rating);
+            var title = results[i].title;
+            var titleText = $("<p>").text("Title: " + title);
+            caption.prepend(ratingText);
+            caption.prepend(titleText);
+
+            var gifImg = $("<img>").addClass(".img-fluid rounded");
+            gifImg.attr("src", results[i].images.fixed_width_still.url);
+            gifImg.attr("url-moving", results[i].images.fixed_width.url);
+            gifImg.attr("url-still", results[i].images.fixed_width_still.url);
+            gifImg.attr("isGIFmoving", false);
+
+            gifDiv.prepend(caption);
+            gifDiv.prepend(gifImg);
+
+            topDiv.prepend(gifDiv);
+            $("#gifDisplay").prepend(topDiv);
+          }
+
+          // the moarButton....
+          var moarButton = $("<div>").addClass("btn btn-outline-warning btn-block my-2 my-sm-0 vgfont");
+            var moreText = $("<span>").text(`Show more GIFs of "${giphyTarget}"!!!`);
+            moarButton.prepend(moreText);
+            $("#moarButton").prepend(moarButton);
+          
+          $("#moarButton").on("click", function() {
+            $("#gifDisplayMore").empty();
+            $("#masButton").empty();
+            $("#gifDisplayMas").empty();
+            $("#endButton").empty();
+          // >>>> DISPLAY MOAR GIFS
+          for (var i = 4; i < 12; i++) {
+          var topDiv = $("<div>").addClass("col-md-3");
+          var gifDiv = $("<div>").addClass("thumbnail");
+
+          var caption = $("<div>").addClass("caption text-white roundfont");
+          var rating = results[i].rating.toUpperCase();
+          var ratingText = $("<p>").text("Rating: " + rating);
+          var title = results[i].title;
+          var titleText = $("<p>").text("Title: " + title);
+          caption.prepend(ratingText);
+          caption.prepend(titleText);
+
+          var gifImg = $("<img>").addClass(".img-fluid rounded");
+          gifImg.attr("src", results[i].images.fixed_width_still.url);
+          gifImg.attr("url-moving", results[i].images.fixed_width.url);
+          gifImg.attr("url-still", results[i].images.fixed_width_still.url);
+          gifImg.attr("isGIFmoving", false);
+
+          gifDiv.prepend(caption);
+          gifDiv.prepend(gifImg);
+
+          topDiv.prepend(gifDiv);
+          $("#gifDisplayMore").prepend(topDiv);
+          }
+
+          // masButton (sponsored by #TacoBell... live Mas)
+          var masButton = $("<div>").addClass("btn btn-outline-warning btn-block px-4 my-2 my-sm-0 vgfont");
+          var masText = $("<span>").text(`I Can Haz Moar ${giphyTarget} GIFZ?!?!!???`);
+          masButton.prepend(masText);
+          $("#masButton").prepend(masButton);
+
+
+          $("#masButton").on("click", function() {
+          $("#gifDisplayMas").empty();
+          $("#endButton").empty();
+            // I CAN HAZ DISPLAYZ YET MOAR GIFZ
+            for (var i = 12; i < 24; i++) {
+            var topDiv = $("<div>").addClass("col-md-3");
+            var gifDiv = $("<div>").addClass("thumbnail");
+
+            var caption = $("<div>").addClass("caption text-white roundfont");
+            var rating = results[i].rating.toUpperCase();
+            var ratingText = $("<p>").text("Rating: " + rating);
+            var title = results[i].title;
+            var titleText = $("<p>").text("Title: " + title);
+            caption.prepend(ratingText);
+            caption.prepend(titleText);
+
+            var gifImg = $("<img>").addClass(".img-fluid rounded");
+            gifImg.attr("src", results[i].images.fixed_width_still.url);
+            gifImg.attr("url-moving", results[i].images.fixed_width.url);
+            gifImg.attr("url-still", results[i].images.fixed_width_still.url);
+            gifImg.attr("isGIFmoving", false);
+
+            gifDiv.prepend(caption);
+            gifDiv.prepend(gifImg);
+
+            topDiv.prepend(gifDiv);
+            $("#gifDisplayMas").prepend(topDiv);
+            }
+
+            // endButton (shshsh... they dont know that)
+            var endButton = $("<div>").addClass("btn btn-outline-danger btn-lg btn-block px-4 my-2 my-sm-0 vgfont");
+            var endText = $("<span>").text("moar m0ar m0aRRR ... Gimme ALL teh GIFS!!!");
+            endButton.prepend(endText);
+            $("#endButton").prepend(endButton);
+
+            });
+          });
+        });
+    });
+  
+});
+
+// i got results[i].images.fixed_width.url
+// and results[i].images.fixed_width_still.url
+
+</script>
+
+</body>
+</html>
